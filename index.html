@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>package.json 生成器</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="js/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/jquery.setForm.js"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#basic" data-toggle="#basic">基本设置</a></li>
+                <li role="presentation"><a href="#author" data-toggle="#author">软件&作者</a></li>
+                <li role="presentation"><a href="#window" data-toggle="#window">窗口信息</a></li>
+                <li role="presentation"><a href="#advanced" data-toggle="#advanced">高级设置</a></li>
+                <div class="btn-group pull-right" role="group">
+                    <button type="button" id="load" class="btn btn-default">加载</button>
+                    <input id="fileDialog" class="hidden" type="file" accept=".json"/>
+                    <button type="button" id="refresh" class="btn btn-default">刷新</button>
+                    <button type="button" id="save" class="btn btn-default">保存</button>
+                    <input id="fileSaveDialog" class="hidden" nwsaveas type="file" accept=".json"/>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row-fluid tabs-nwjs" id="basic">
+        <div class="span12">
+            <form id="form-basic" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="main" class="col-sm-2 control-label">main</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" required="required" id="main" name="main"
+                               placeholder="指定程序的起始页面">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">name</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" required="required" id="name" name="name"
+                               placeholder="可以包含&quot;.&quot; 或者&quot;_&quot;或者&quot;-&quot; ，不允许带空格。name必须全局唯一。">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">description</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="description" name="description" placeholder="描述">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="version" class="col-sm-2 control-label">version</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="version" name="version" value="0.0.1"
+                               placeholder="版本">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row-fluid tabs-nwjs" id="author">
+        <div class="span12">
+            <form id="form-maintainers" class="form-horizontal" role="form">
+                <div class="form-group" id="maintainers-0">
+                    <div class="col-sm-2">
+                        <label class="control-label pull-right">maintainers</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" name="name"
+                               placeholder="name">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="email" class="form-control" name="email"
+                               placeholder="E-mail">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="url" class="form-control" name="web"
+                               placeholder="web">
+                    </div>
+                </div>
+            </form>
+            <form class="form-horizontal" id="form-keywords" role="form">
+                <div class="form-group">
+                    <label for="keywords" class="col-sm-2 control-label">keywords</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="keywords" name="keywords" placeholder="关键字">
+                    </div>
+                </div>
+            </form>
+            <form class="form-horizontal" id="form-contributors" role="form">
+                <div class="form-group" id="contributors-0">
+                    <div class="col-sm-2">
+                        <label class="control-label pull-right">contributors</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" name="name"
+                               placeholder="name">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="email" class="form-control" name="email"
+                               placeholder="E-mail">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="url" class="form-control" name="web"
+                               placeholder="web">
+                    </div>
+                </div>
+            </form>
+            <form class="form-horizontal" id="form-bugs" role="form">
+                <div class="form-group">
+                    <label for="bugs" class="col-sm-2 control-label">bugs</label>
+
+                    <div class="col-sm-10">
+                        <input type="url" class="form-control" id="bugs" name="bugs" placeholder="bug提交页面地址。">
+                    </div>
+                </div>
+            </form>
+            <form class="form-horizontal" id="form-licenses" role="form">
+                <div class="form-group" id="licenses-1">
+                    <div class="col-sm-2">
+                        <label class="control-label pull-right">licenses</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" name="type"
+                               placeholder="name">
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="url" class="form-control" name="url"
+                               placeholder="url">
+                    </div>
+                </div>
+            </form>
+            <form class="form-horizontal" id="form-repositories" role="form">
+                <div class="form-group" id="repositories-0">
+                    <div class="col-sm-2">
+                        <label class="control-label pull-right">repositories</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" name="type"
+                               placeholder="type">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="url" class="form-control" name="url"
+                               placeholder="url">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="path"
+                               placeholder="path">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row-fluid tabs-nwjs" id="window">
+        <div class="span12">
+            <form class="form-horizontal" id="form-window" role="form">
+                <div class="form-group">
+                    <label for="title" class="col-sm-2 control-label">title</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="默认窗体标题">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="icon" class="col-sm-2 control-label">icon</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="icon" name="icon" placeholder="图标">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="width" class="col-sm-2 control-label">width</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="width" name="width" placeholder="宽度">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="height" class="col-sm-2 control-label">height</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="height" name="height" placeholder="高度">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="position" class="col-sm-2 control-label">position</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="position" name="position"
+                               placeholder="窗口打开时的位置，可以设置为“null”、“center”或者“mouse”。">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="min_width" class="col-sm-2 control-label">min_width</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="min_width" name="min_width"
+                               placeholder="窗口宽度的最小值">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="min_height" class="col-sm-2 control-label">min_height</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="min_height" name="min_height"
+                               placeholder="窗口高度的最小值">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="max_width" class="col-sm-2 control-label">max_width</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="max_width" name="max_width"
+                               placeholder="窗口宽度的最大值">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="max_height" class="col-sm-2 control-label">max_height</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="max_height" name="max_height"
+                               placeholder="窗口高度的最大值">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="toolbar" class="col-sm-2 control-label">toolbar</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="toolbar" value=true name="toolbar">是否显示导航栏
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="show" class="col-sm-2 control-label">show</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="show" value="true" name="show">启动时窗口是否可见
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="frame" class="col-sm-2 control-label">frame</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="frame" value="true" name="frame">程序是否无边框显示
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="as_desktop" class="col-sm-2 control-label">as_desktop</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="as_desktop" value="true" name="as_desktop">暂时还没明白具体作用
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="resizable" class="col-sm-2 control-label">resizable</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="resizable" value="true" name="resizable">是否允许调整窗口大小。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="always-on-top" class="col-sm-2 control-label">always-on-top</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="always-on-top" value="true" name="always-on-top">是否窗口置顶。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fullscreen" class="col-sm-2 control-label">fullscreen</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="fullscreen" value="true" name="fullscreen">是否全屏显示
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="show_in_taskbar" class="col-sm-2 control-label">show_in_taskbar</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="show_in_taskbar" value="true" name="show_in_taskbar">是否在任务栏显示图标。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="kiosk" class="col-sm-2 control-label">kiosk</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="kiosk" value="true" name="kiosk">是否使用kiosk模式。如果使用kiosk模式，应用程序将全屏显示，并且阻止用户离开应用。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row-fluid tabs-nwjs" id="advanced">
+        <div class="span12">
+            <form class="form-horizontal" id="form-advanced" role="form">
+                <div class="form-group">
+                    <label for="node-main" class="col-sm-2 control-label">node-main</label>
+
+                    <div class="col-sm-10">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="node-main"
+                                   placeholder="指定一个node.js文件，当程序启动时，该文件会被运行，启动时间要早于node-webkit加载html的时间。">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nodejs" class="col-sm-2 control-label">nodejs</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="true" id="nodejs">是否启用webkit的node支持。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="single-instance" class="col-sm-2 control-label">single-instance</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="true" id="single-instance" checked="checked">如果你希望允许同时启动多个实例，将该值设置为false。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="no-edit-menu" class="col-sm-2 control-label">no-edit-menu</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="true" id="no-edit-menu" checked="checked">Edit菜单是否显示。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="webkit.plugin" class="col-sm-2 control-label">webkit.plugin</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="true" id="webkit.plugin">是否加载插件，如flash，默认值为false。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="webkit.java" class="col-sm-2 control-label">webkit.java</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="true" id="webkit.java">是否加载Java applets，默认为false。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="webkit.page-cache" class="col-sm-2 control-label">webkit.page-cache</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="true" id="webkit.page-cache">是否启用页面缓存，默认为false。
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="user-agent" class="col-sm-2 control-label">user-agent</label>
+
+                    <div class="col-sm-10">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="user-agent"
+                                   placeholder="应用发起http请求时，使用的user-agent头信息。">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="chromium-args" class="col-sm-2 control-label">chromium-args</label>
+
+                    <div class="col-sm-10">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="chromium-args"
+                                   placeholder="自定义chromium启动参数。">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="js-flags" class="col-sm-2 control-label">js-flags</label>
+
+                    <div class="col-sm-10">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="js-flags"
+                                   placeholder="传递给js引擎（V8）的参数。">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inject-js-start" class="col-sm-2 control-label">inject-js-start</label>
+
+                    <div class="col-sm-10">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inject-js-start"
+                                   placeholder="该js文件会在所有css文件加载完毕，dom初始化之前执行。">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inject-js-end" class="col-sm-2 control-label">inject-js-end</label>
+
+                    <div class="col-sm-10">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inject-js-end"
+                                   placeholder="该js文件会在页面加载完毕，onload事件触发之前执行。">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="snapshot" class="col-sm-2 control-label">snapshot</label>
+
+                    <div class="col-sm-10">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="snapshot"
+                                   placeholder="应用程序的快照文件路径。">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dom_storage_quota" class="col-sm-2 control-label">dom_storage_quota</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="dom_storage_quota" placeholder="dom 存储的限额">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
