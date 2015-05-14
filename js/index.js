@@ -49,7 +49,9 @@ function loadJSONFile() {
     $("#form-advanced").setform(JsonObj);// 高级设置
 
     $("#form-maintainers").setform(JsonObj.maintainers); //软件维护者信息
-    $("#form-keywords").setform({keywords: JsonObj.keywords.join(",")}); // 关键词
+    if (JsonObj.keywords) {
+        $("#form-keywords").setform({keywords: JsonObj.keywords.join(",")}); // 关键词
+    }
     $("#form-bugs").setform({bugs: JsonObj.bugs}); // bug提交地址
     $("#form-contributors").setform(JsonObj.contributors); // 贡献者信息
     $("#form-licenses").setform(JsonObj.licenses); // licenses
@@ -71,6 +73,7 @@ function saveJSONFile() {
     var licenses = $("#form-licenses").serializeJson(); // licenses
     var repositories = $("#form-repositories").serializeJson(); // 仓库地址
 
+    // 合并对象
     var newmerge = {
         maintainers: maintainers,
         keywords: function () {
@@ -100,7 +103,6 @@ function saveJSONFile() {
             } else {
                 return {};
             }
-            return
         },
         repositories: function () {
             if (repositories) {
@@ -108,7 +110,6 @@ function saveJSONFile() {
             } else {
                 return {};
             }
-            return
         }
     };
 

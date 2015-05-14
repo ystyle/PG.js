@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "package.js Generator",
   "version": "0.0.1",
   "main": "index.html",
   "window":{
