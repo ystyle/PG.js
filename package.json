@@ -6,5 +6,6 @@
     "toolbar":true,
     "width":785,
     "icon": "resources/icon.png"
-  }
+  },
+  "no-edit-menu":true
 }
